@@ -11,24 +11,24 @@ const expirationHours=1;
 const JWT_AUTH = {
   getSessionData: function () {
     try {
-      var token = Cookies.get(cookieName);
-      if (!token) {
-        window.location.href = LOGIN_PAGE;
-        return null; // Token is not present
-      }
-      var client = jwt.verify(token, credentials.jwt);
+        var token = Cookies.get(cookieName);
+        if (!token) {
+            // Token is not present
+            throw new Error('No Auth Cookie');
+        }
+        var client = jwt.verify(token, credentials.jwt);
 
-      // Check if token has expired
-      if (client.exp && client.exp < Date.now() / 1000) {
-        // Token has expired
-        this.removeSessionData(); // Remove the expired token
+        // Check if token has expired
+        if (client.exp && client.exp < Date.now() / 1000) {
+            // Token has expired
+            this.removeSessionData(); // Remove the expired token            
+            throw new Error('Token Expired');
+        }
+        return client;
+    } catch (e) {
+        console.log(e.message);
         window.location.href = LOGIN_PAGE;
         return null;
-      }
-      return client;
-    } catch (e) {
-      window.location.href = LOGIN_PAGE;
-      return null;
     }
   },
   saveSessionData: function (clientData) {
