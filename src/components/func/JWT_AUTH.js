@@ -5,11 +5,18 @@ var credentials = {}
 credentials.jwt = process.env.REACT_APP_JWT;
 
 const cookieName="access_token";
+const LOGIN_PAGE="/";
+
 const JWT_AUTH = {
     "getSessionData": function getSessionData(){
-        var token = Cookies.get(cookieName);
-        var client = jwt.verify(token, credentials.jwt);
-        return client;
+        try{            
+            var token = Cookies.get(cookieName);
+            var client = jwt.verify(token, credentials.jwt);
+            return client;
+        }catch(e){
+            window.location.href=LOGIN_PAGE;
+            return null;
+        }
     },
     "saveSessionData": function saveSessionData(clientData){
         const data = {"email":clientData.email};

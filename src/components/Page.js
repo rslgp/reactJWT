@@ -1,11 +1,14 @@
 import JWT_AUTH from './func/JWT_AUTH';
-import app from './func/firebase'
+import app from './func/firebase_setup'
 import { getDatabase, ref, set, get } from "firebase/database";
 const db = getDatabase(app);
 
 const Page = () => {
     function getData(){
         var client = JWT_AUTH.getSessionData();
+        if(client==null){
+            return;    
+        };
         var email = client.email;
         var usersRef = ref(db,"users/"+email);
         console.log(db);
