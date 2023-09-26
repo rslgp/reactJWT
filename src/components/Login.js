@@ -26,7 +26,11 @@ function Login() {
       var token = jwt.sign(data, credentials.jwt);
       Cookies.set('access_token',token);
     }
-
+    window.teste= ()=>{
+      var token = Cookies.get("access_token");
+      var client = jwt.verify(token, credentials.jwt);
+      console.log(client.email)
+    }
   return (
     <div className="GoogleLogin">
         <button onClick={()=>{saveCookie({"email":"teste"})}}>TESTE</button>
@@ -37,6 +41,7 @@ function Login() {
         onFailure={console.log}
         cookiePolicy={'single_host_origin'}
         />
+        <button onClick={()=>{window.teste()}}>TESTE2</button>
         
     </div>
   );
