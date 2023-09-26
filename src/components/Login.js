@@ -2,6 +2,15 @@ import GoogleLogin from  "@stack-pulse/next-google-login"
 
 import saveToGoogleSheets from './func/saveToGoogleSheets'
 
+import Cookies from "js-cookie"
+
+var jwt = require("jsonwebtoken")
+
+const credentials = {
+  "google":process.env.REACT_APP_GOOGLE_CLIENTID,
+  "jwt":process.env.REACT_APP_JWT
+}
+
 function Login() {
 
     function onLogin(googleResponse){
@@ -9,14 +18,20 @@ function Login() {
         var inseriu = saveToGoogleSheets(googleResponse.profileObj);
         if(inseriu) alert("Ponto registrado");
         else alert("Falha no ponto")
+        saveCookie(googleResponse.profileObj)
     }
-    function getStringClientID(){
-      return process.env.REACT_APP_GOOGLE_CLIENTID;
+
+    function saveCookie(profileObj){
+      const data = {"email":profileObj.email};
+      var token = jwt.sign(data, credentials.jwt);
+      Cookies.set('access_token',token);
     }
+
   return (
     <div className="GoogleLogin">
+        <button onClick={()=>{saveCookie({"email":"teste"})}}>TESTE</button>
         <GoogleLogin
-        clientId={getStringClientID()}
+        clientId={credentials.google}
         buttonText="Continue with Google"
         onSuccess={onLogin}
         onFailure={console.log}
