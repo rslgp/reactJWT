@@ -13,6 +13,7 @@ const JWT_AUTH = {
     try {
       var token = Cookies.get(cookieName);
       if (!token) {
+        window.location.href = LOGIN_PAGE;
         return null; // Token is not present
       }
       var client = jwt.verify(token, credentials.jwt);
