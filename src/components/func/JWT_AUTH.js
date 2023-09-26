@@ -32,7 +32,7 @@ const JWT_AUTH = {
     }
   },
   saveSessionData: function (clientData) {
-    const expInSeconds = expirationHours * 60 * 60;
+    const expInSeconds = (expirationHours+1) * 60 * 60;
     const data = {
       email: clientData.email,
       exp: Math.floor(Date.now() / 1000) + expInSeconds,
