@@ -12,8 +12,8 @@ import GlobalVariables from "./components/func/GlobalVariables";
 
 const router = createHashRouter([
   {
-    path: "/*",
-    element: <App />
+    path: "/",
+    element: <App />,
   },
   {
     path: GlobalVariables.loginPage,
