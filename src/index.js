@@ -8,10 +8,11 @@ import {
 import './index.css';
 import App from './App';
 import Page from "./components/Page";
+import GlobalVariables from "./components/func/GlobalVariables";
 
 const router = createBrowserRouter([
   {
-    path: "/reactJWT",
+    path: GlobalVariables.loginPage,
     element: <App />,
     children:[
       {
