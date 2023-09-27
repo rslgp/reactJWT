@@ -10,6 +10,8 @@ import App from './App';
 import Page from "./components/Page";
 import PublicPage from "./components/PublicPage";
 import GlobalVariables from "./components/func/GlobalVariables";
+import UsersByTag from "./components/UsersByTag";
+import AllTags from "./components/AllTags";
 
 // Set the initial hash value to '/#' when the application loads.
 if (window.location.hash === "") {
@@ -32,6 +34,14 @@ const router = createHashRouter([
   {
     path: GlobalVariables.publicProfilePage,
     element: <PublicPage />,
+  },
+  {
+    path: GlobalVariables.tagPage,
+    element: <UsersByTag />,
+  },
+  {
+    path: GlobalVariables.allTagPage,
+    element: <AllTags />,
   }
 ]);
 

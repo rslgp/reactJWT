@@ -1,6 +1,6 @@
 import GoogleLogin from  "@stack-pulse/next-google-login"
 
-import saveToGoogleSheets from './func/saveToGoogleSheets'
+//import saveToGoogleSheets from './func/saveToGoogleSheets'
 
 import JWT_AUTH from "./func/JWT_AUTH"
 import GlobalVariables from "./func/GlobalVariables";
