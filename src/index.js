@@ -13,14 +13,12 @@ import GlobalVariables from "./components/func/GlobalVariables";
 const router = createBrowserRouter([
   {
     path: GlobalVariables.loginPage,
-    element: <App />,
-    children:[
-      {
-        path: "page",
-        element: <Page />,
-      }
-    ]
+    element: <App />
   },
+  {
+    path: GlobalVariables.profilePage,
+    element: <Page />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
