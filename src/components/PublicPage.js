@@ -43,7 +43,7 @@ const Page = () => {
     }
 
     getData();
-  }, []); // Empty dependency array to run this effect only once
+  }, [profile_id]); // Empty dependency array to run this effect only once
 
   return (
     <div>
