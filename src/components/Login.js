@@ -3,6 +3,7 @@ import GoogleLogin from  "@stack-pulse/next-google-login"
 import saveToGoogleSheets from './func/saveToGoogleSheets'
 
 import JWT_AUTH from "./func/JWT_AUTH"
+import GlobalVariables from "./func/GlobalVariables";
 
 const credentials = {
   "google":process.env.REACT_APP_GOOGLE_CLIENTID,
@@ -15,14 +16,16 @@ function Login() {
         console.log(googleResponse);
         var inseriu = saveToGoogleSheets(googleResponse.profileObj);
         if(inseriu) alert("Ponto registrado");
-        else alert("Falha no ponto")
+        else alert("Falha no ponto");
 
-        JWT_AUTH.saveSessionData(googleResponse.profileObj)
+        JWT_AUTH.saveSessionData(googleResponse.profileObj);
+        GlobalVariables.profileData = googleResponse.profileObj;
+        window.location.href="./page";
     }
     
     const getSession = ()=>{
       var client = JWT_AUTH.getSessionData();
-      if(client) window.location.href="./page"
+      if(client) window.location.href="./page";
     }
   return (
     <div className="GoogleLogin">

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import JWT_AUTH from "./func/JWT_AUTH";
 import app from "./func/firebase_setup";
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref, get, set } from "firebase/database";
+import GlobalVariables from "./func/GlobalVariables";
 
 const db = getDatabase(app);
 
@@ -15,15 +16,24 @@ const Page = () => {
         return;
       }
       const email = client.email;
-      const usersRef = ref(db, "users/" + email);
+      const userPath="users/" + email;
+      const userRef = ref(db, userPath);
 
-      get(usersRef)
+      get(userRef)
         .then((snapshot) => {
           if (snapshot.exists()) {
             const data = snapshot.val();
             setUserData(data);
           } else {
             console.log("No data available");
+            const data = {
+              email: email,
+              name: GlobalVariables.profileData.name,              
+              profilePictureUrl: GlobalVariables.profileData.imageUrl,
+            };
+            set(userRef, data);
+            
+            setUserData(data);
           }
         })
         .catch((error) => {
