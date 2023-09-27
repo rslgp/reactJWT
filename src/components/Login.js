@@ -21,12 +21,12 @@ function Login() {
         JWT_AUTH.saveSessionData(googleResponse.profileObj);
         GlobalVariables.profileData = googleResponse.profileObj;
         
-        window.location.href=GlobalVariables.profilePage;
+        window.location.href=GlobalVariables.homepage +"/"+ GlobalVariables.profilePage;
     }
     
     const getSession = ()=>{
       var client = JWT_AUTH.getSessionData();
-      if(client) window.location.href=GlobalVariables.profilePage;
+      if(client) window.location.href=GlobalVariables.homepage +"/"+ GlobalVariables.profilePage;
     }
   return (
     <div className="GoogleLogin">
