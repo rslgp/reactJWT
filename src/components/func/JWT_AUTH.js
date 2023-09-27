@@ -1,11 +1,11 @@
 import Cookies from "js-cookie";
+import GlobalVariables from "./GlobalVariables";
 var jwt = require("jsonwebtoken");
 
 var credentials = {}
 credentials.jwt = process.env.REACT_APP_JWT;
 
 const cookieName = "access_token";
-const LOGIN_PAGE = "/";
 const expirationHours=1;
 
 const JWT_AUTH = {
@@ -27,7 +27,7 @@ const JWT_AUTH = {
         return client;
     } catch (e) {
         console.log(e.message);
-        window.location.href = LOGIN_PAGE;
+        window.location.href = GlobalVariables.loginpage;
         return null;
     }
   },
