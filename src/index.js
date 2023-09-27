@@ -11,12 +11,14 @@ import Page from "./components/Page";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/reactJWT",
     element: <App />,
-  },
-  {
-    path: "/page",
-    element: <Page />,
+    children:[
+      {
+        path: "/page",
+        element: <Page />,
+      }
+    ]
   },
 ]);
 
