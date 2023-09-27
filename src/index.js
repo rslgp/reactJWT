@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import {
-  createBrowserRouter,
+  createHashRouter,
   RouterProvider,
 } from "react-router-dom";
 
@@ -10,7 +10,7 @@ import App from './App';
 import Page from "./components/Page";
 import GlobalVariables from "./components/func/GlobalVariables";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: GlobalVariables.loginPage,
     element: <App />
