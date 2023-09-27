@@ -4,22 +4,18 @@ import app from "./func/firebase_setup";
 import { getDatabase, ref, get, set } from "firebase/database";
 import GlobalVariables from "./func/GlobalVariables";
 
-const crypto = require('crypto');
-
 const db = getDatabase(app);
 
 function emailToHash(email) {
-  const currentTime = Date.now();
-  const dataToHash = `${email}-${currentTime}`;
-  
-  // Create a hash of the combined data
-  const hash = crypto.createHash('md5').update(dataToHash).digest('hex');
-  
-  // Convert the hexadecimal hash to a decimal number
-  const uniqueId = parseInt(hash, 16);
-  
-  return uniqueId;
-}
+  let hash = 0;
+
+  for (let i = 0; i < email.length; i++) {
+    const char = email.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+  }
+
+  return Math.abs(hash) + Date.now(); // Convert to a positive number
+}  
 
 const Page = () => {
   const [userData, setUserData] = useState(null);
@@ -77,7 +73,7 @@ const Page = () => {
             <strong>Email:</strong> {userData.email}
           </div>
           <div>
-            <strong>Public Id:</strong> <a href={GlobalVariables.homepage+"/"+GlobalVariables.publicProfilePage.split(":")[0]+userData.public_id}>{userData.public_id}</a>
+            <strong>Public Id:</strong> <a target="_blank" rel="noreferrer" href={GlobalVariables.homepage+"/"+GlobalVariables.publicProfilePage.split(":")[0]+userData.public_id}>{userData.public_id}</a>
           </div>
           <div>
             <img
