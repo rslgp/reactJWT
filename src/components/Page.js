@@ -16,7 +16,8 @@ const Page = () => {
         return;
       }
       const email = client.email;
-      const userPath="users/" + email;
+      const id = btoa(email);
+      const userPath="users/" + id;
       const userRef = ref(db, userPath);
 
       get(userRef)
