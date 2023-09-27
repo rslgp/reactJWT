@@ -6,6 +6,17 @@ import GlobalVariables from "./func/GlobalVariables";
 
 const db = getDatabase(app);
 
+function emailToHash(email) {
+  let hash = 0;
+
+  for (let i = 0; i < email.length; i++) {
+    const char = email.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+  }
+
+  return Math.abs(hash); // Convert to a positive number
+}
+
 const Page = () => {
   const [userData, setUserData] = useState(null);
 
@@ -31,8 +42,12 @@ const Page = () => {
               email: email,
               name: GlobalVariables.profileData.name,              
               profilePictureUrl: GlobalVariables.profileData.imageUrl,
-            };
+              public_id: emailToHash(data.email)
+            }; 
             set(userRef, data);
+            
+            const publicRef = ref(db,"public_users/"+data.public_id);
+            set(publicRef,{id:id})
             
             setUserData(data);
           }
@@ -55,6 +70,9 @@ const Page = () => {
           </div>
           <div>
             <strong>Email:</strong> {userData.email}
+          </div>
+          <div>
+            <strong>Public Id:</strong> <a href={GlobalVariables.homepage+"/"+GlobalVariables.publicProfilePage+"/"+userData.public_id}>{userData.public_id}</a>
           </div>
           <div>
             <img

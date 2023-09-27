@@ -27,7 +27,7 @@ const JWT_AUTH = {
         return client;
     } catch (e) {
         console.log(e.message);
-        window.location.href = GlobalVariables.loginpage;
+        window.location.href=GlobalVariables.homepage +"/"+ GlobalVariables.loginPage;
         return null;
     }
   },

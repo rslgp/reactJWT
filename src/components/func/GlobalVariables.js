@@ -1,6 +1,6 @@
 const GlobalVariables = {}
 GlobalVariables.homepage="https://rslgp.github.io/reactJWT/#";
-GlobalVariables.baseURL="";
-GlobalVariables.loginPage=GlobalVariables.baseURL+"auth/login";
-GlobalVariables.profilePage=GlobalVariables.baseURL+"page";
+GlobalVariables.loginPage="auth/login";
+GlobalVariables.profilePage="page";
+GlobalVariables.publicProfilePage="profile/:profile_id";
 export default GlobalVariables;
