@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import app from "./func/firebase_setup";
 import { getDatabase, ref, get } from "firebase/database";
 import { useParams } from 'react-router-dom';
-import GlobalVariables from "./func/GlobalVariables";
 
 const db = getDatabase(app);
 
