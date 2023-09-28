@@ -7,11 +7,11 @@ import {
 
 import './index.css';
 import App from './App';
-import Page from "./components/Page";
-import PublicPage from "./components/PublicPage";
 import GlobalVariables from "./components/func/GlobalVariables";
-import UsersByTag from "./components/UsersByTag";
-import AllTags from "./components/AllTags";
+import Page from "./components/firebasePages/Page";
+import PublicPage from "./components/firebasePages/PublicPage";
+import UsersByTag from "./components/firebasePages/UsersByTag";
+import AllTags from "./components/firebasePages/AllTags";
 
 // Set the initial hash value to '/#' when the application loads.
 if (window.location.hash === "") {
@@ -46,7 +46,7 @@ const router = createHashRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  //<React.StrictMode> //fix useEffect running twice
     <RouterProvider router={router} />
-  </React.StrictMode>
+  //</React.StrictMode>
 );

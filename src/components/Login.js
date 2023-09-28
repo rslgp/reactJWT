@@ -4,6 +4,7 @@ import GoogleLogin from  "@stack-pulse/next-google-login"
 
 import JWT_AUTH from "./func/JWT_AUTH"
 import GlobalVariables from "./func/GlobalVariables";
+import Cookies from "js-cookie";
 
 const credentials = {
   "google":process.env.REACT_APP_GOOGLE_CLIENTID,
@@ -19,7 +20,10 @@ function Login() {
         //else alert("Falha no ponto");
 
         JWT_AUTH.saveSessionData(googleResponse.profileObj);
-        GlobalVariables.profileData = googleResponse.profileObj;
+        //GlobalVariables.profileData = googleResponse.profileObj;
+        const {name, imageUrl} = googleResponse.profileObj;
+        const profileData = {name: name, imageUrl:imageUrl};
+        Cookies.set("profile",JSON.stringify(profileData));
         
         window.location.href=GlobalVariables.homepage +"/"+ GlobalVariables.profilePage;
     }
