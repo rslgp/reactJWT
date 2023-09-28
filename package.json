@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://rslgp.github.io/reactJWT/#",
   "dependencies": {
+    "@firebase/firestore": "^4.2.0",
     "@stack-pulse/next-google-login": "^1.0.5",
     "firebase": "^10.4.0",
     "google-spreadsheet": "3.3.0",
