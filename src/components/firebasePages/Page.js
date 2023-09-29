@@ -4,6 +4,7 @@ import app from "../func/firebase_setup";
 import GlobalVariables from "../func/GlobalVariables";
 import { getFirestore, doc, getDoc, setDoc, updateDoc } from "firebase/firestore"; // Updated import statements
 import Cookies from "js-cookie";
+import AutoComplete from "./AutoComplete";
 
 // Initialize Firestore
 const firestore = getFirestore(app);
@@ -185,6 +186,7 @@ const Page = () => {
           </div>
 
           <button onClick={saveProfile}>SAVE</button>
+          <AutoComplete/>
         </div>
       ) : (
         <p>Loading profile data...</p>

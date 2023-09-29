@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 
 const firestore = getFirestore(app);
 
-const Page = () => {
+const PublicPage = () => {
   const { profile_id } = useParams();
   const [userData, setUserData] = useState(null);
 
@@ -54,6 +54,14 @@ const Page = () => {
               style={{ maxWidth: "100px", maxHeight: "100px" }}
             />
           </div>
+          <div>
+          <strong>Tags:</strong>
+            <ul>
+              {userData.tags.map((tag, index) => (
+                <li key={index}>{tag}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       ) : (
         <p>Loading profile data...</p>
@@ -62,4 +70,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default PublicPage;

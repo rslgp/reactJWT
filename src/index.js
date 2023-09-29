@@ -12,6 +12,7 @@ import Page from "./components/firebasePages/Page";
 import PublicPage from "./components/firebasePages/PublicPage";
 import UsersByTag from "./components/firebasePages/UsersByTag";
 import AllTags from "./components/firebasePages/AllTags";
+import MultiTag from "./components/MultiTag";
 
 // Set the initial hash value to '/#' when the application loads.
 if (window.location.hash === "") {
@@ -42,6 +43,10 @@ const router = createHashRouter([
   {
     path: GlobalVariables.allTagPage,
     element: <AllTags />,
+  },
+  {
+    path: GlobalVariables.multiTagPage,
+    element: <MultiTag />,
   }
 ]);
 
