@@ -113,7 +113,7 @@ const Page = () => {
   const handleAddTag = () => {
     if (newTag.trim() === "" || tags.includes(newTag)) return; // Don't add empty tags
 
-    if (!/^[A-Za-z]+$/.test(newTag)) {
+    if (!/^[A-Za-z ]+$/.test(newTag)) {
       // Check if the newTag contains only letters
       alert("Tags can only contain letters.");
       return;
