@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import JWT_AUTH from "../func/JWT_AUTH";
 import app from "../func/firebase_setup";
 import GlobalVariables from "../func/GlobalVariables";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteField } from "firebase/firestore"; // Updated import statements
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteField, deleteDoc } from "firebase/firestore"; // Updated import statements
 import Cookies from "js-cookie";
 import AutoComplete from "./AutoComplete";
 
 
-import { Box, Typography, Avatar, Chip, TextField, Button } from "@mui/material";
+import { Box, Typography, Avatar, Chip, TextField, Button, Divider } from "@mui/material";
 
 // Initialize Firestore
 const firestore = getFirestore(app);
@@ -32,6 +32,23 @@ const Page = () => {
   const [newPublicContact, setNewPublicContact] = useState("");
   const [newPortfolio, setNewPortfolio] = useState("");
   const [newCurriculo, setNewCurriculo] = useState("");
+
+  const deleteProfile = async () => {    
+    const client = JWT_AUTH.getSessionData();
+    if (!client) {
+      return;
+    }
+    const email = client.email;
+    const id = btoa(email);
+    
+    await deleteDoc( doc(firestore, "public_users", userData.public_id.toString()) );
+
+    await deleteDoc( doc(firestore, "users", id) );
+    
+    alert("Profile deletado");
+    
+    window.location.href=GlobalVariables.homepage +"/"+ GlobalVariables.loginPage;
+  }
 
   const saveProfile = () => {
     const client = JWT_AUTH.getSessionData();
@@ -304,7 +321,13 @@ const Page = () => {
           }}
         />
 
-        <Button onClick={saveProfile} style={{borderRadius:"12px",height: "60px", width: "100%", marginTop: "8px", backgroundColor:"#f0f2f5"}} >SAVE</Button>
+        <Button onClick={saveProfile} style={{borderRadius:"12px",height: "60px", width: "80%", marginTop: "8px", backgroundColor:"#f0f2f5"}} >SAVE</Button>
+
+        
+        <Divider variant="fullWidth" sx={{ margin: "16px 0", padding:"10px", width:"70%", mx: "auto" }} />
+        
+        <Button onClick={deleteProfile} style={{color:"red", borderRadius:"12px",height: "60px", width: "80%", marginTop: "8px", backgroundColor:"#f0f2f5"}} >Delete Profile</Button>
+
       </Box>
           </>
       ) : (
