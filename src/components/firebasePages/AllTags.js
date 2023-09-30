@@ -47,13 +47,21 @@ const AllTags = () => {
       }}
     >
       <h2>All Tags:</h2>
-      <List>
+      <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row", // Change the direction to horizontal
+            flexWrap: "wrap", // Allow items to wrap to the next line
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
         {tags.map((tag) => (
           <Link style={{ marginRight: "10px" }} key={tag} href={`${GlobalVariables.homepage}/${GlobalVariables.tagPage.split(":")[0]}${tag}`} rel="noreferrer" target="_blank">
             {tag}
           </Link>
         ))}
-      </List>
+      </Box>
     </Box>
     </div>
 
