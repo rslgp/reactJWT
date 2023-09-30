@@ -234,7 +234,8 @@ const Page = () => {
         <Box
           sx={{
             display: "flex",
-            flexDirection: "wrap",
+            flexDirection: "row", // Change the direction to horizontal
+            flexWrap: "wrap", // Allow items to wrap to the next line
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -250,6 +251,7 @@ const Page = () => {
             />
           ))}
         </Box>
+
         <TextField
           label="Add a tag"
           value={newTag}
