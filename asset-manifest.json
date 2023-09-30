@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/reactJWT/static/css/main.64619aa5.chunk.css",
-    "main.js": "/reactJWT/static/js/main.70c25cca.chunk.js",
-    "main.js.map": "/reactJWT/static/js/main.70c25cca.chunk.js.map",
+    "main.js": "/reactJWT/static/js/main.e9c8ef12.chunk.js",
+    "main.js.map": "/reactJWT/static/js/main.e9c8ef12.chunk.js.map",
     "runtime-main.js": "/reactJWT/static/js/runtime-main.8307f051.js",
     "runtime-main.js.map": "/reactJWT/static/js/runtime-main.8307f051.js.map",
-    "static/js/2.1c3ec26d.chunk.js": "/reactJWT/static/js/2.1c3ec26d.chunk.js",
-    "static/js/2.1c3ec26d.chunk.js.map": "/reactJWT/static/js/2.1c3ec26d.chunk.js.map",
+    "static/js/2.e3dfe9e9.chunk.js": "/reactJWT/static/js/2.e3dfe9e9.chunk.js",
+    "static/js/2.e3dfe9e9.chunk.js.map": "/reactJWT/static/js/2.e3dfe9e9.chunk.js.map",
     "index.html": "/reactJWT/index.html",
     "static/css/main.64619aa5.chunk.css.map": "/reactJWT/static/css/main.64619aa5.chunk.css.map",
-    "static/js/2.1c3ec26d.chunk.js.LICENSE.txt": "/reactJWT/static/js/2.1c3ec26d.chunk.js.LICENSE.txt"
+    "static/js/2.e3dfe9e9.chunk.js.LICENSE.txt": "/reactJWT/static/js/2.e3dfe9e9.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.8307f051.js",
-    "static/js/2.1c3ec26d.chunk.js",
+    "static/js/2.e3dfe9e9.chunk.js",
     "static/css/main.64619aa5.chunk.css",
-    "static/js/main.70c25cca.chunk.js"
+    "static/js/main.e9c8ef12.chunk.js"
   ]
 }
