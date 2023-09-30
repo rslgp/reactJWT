@@ -230,6 +230,9 @@ const Page = () => {
             {userData.public_id}
           </a>
         </Typography>
+
+        <AutoComplete/>
+
         <Typography variant="body1">Tags:</Typography>
         <Box
           sx={{
@@ -252,6 +255,7 @@ const Page = () => {
           ))}
         </Box>
 
+        <div style={{ display: "flex", flexDirection: "row" }}>
         <TextField
           label="Add a tag"
           value={newTag}
@@ -262,7 +266,8 @@ const Page = () => {
             margin: "10px 0",
           }}
         />
-        <Button onClick={handleAddTag}>Add Tag</Button>
+        <Button onClick={handleAddTag} style={{borderRadius:"12px",height: "60px", marginTop: "8px", backgroundColor:"#f0f2f5"}} >ADD</Button>
+      </div>
         
         <TextField
           label="Add Public Contact"
@@ -299,9 +304,8 @@ const Page = () => {
           }}
         />
 
-        <Button onClick={saveProfile}>SAVE</Button>
+        <Button onClick={saveProfile} style={{borderRadius:"12px",height: "60px", width: "100%", marginTop: "8px", backgroundColor:"#f0f2f5"}} >SAVE</Button>
       </Box>
-          <AutoComplete/>
           </>
       ) : (
         <p>Loading profile data...</p>

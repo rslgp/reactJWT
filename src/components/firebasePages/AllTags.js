@@ -4,7 +4,7 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 import GlobalVariables from "../func/GlobalVariables";
 import app from "../func/firebase_setup"; // Import your Firebase configuration file
 
-import { Box, List, Link } from "@mui/material";
+import { Box, Link } from "@mui/material";
 
 const firestore = getFirestore(app);
 

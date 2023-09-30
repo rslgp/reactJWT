@@ -3,6 +3,7 @@ import Autosuggest from "react-autosuggest";
 import { Link } from "react-router-dom";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import app from "../func/firebase_setup"; // Import your Firebase configuration file
+import { Box } from "@mui/material";
 
 const firestore = getFirestore(app);
 
@@ -10,6 +11,7 @@ const AutoComplete = () => {
   const [tags, setTags] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [value, setValue] = useState("");
+  const [fetchDataClicked, setFetchDataClicked] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,8 +34,11 @@ const AutoComplete = () => {
       }
     };
 
-    fetchData();
-  }, []);
+    if (fetchDataClicked) {
+      // Fetch data only when the button is clicked
+      fetchData();
+    }
+  }, [fetchDataClicked]);
 
   const getSuggestions = (inputValue) => {
     const inputValueLower = inputValue.toLowerCase();
@@ -53,12 +58,25 @@ const AutoComplete = () => {
   };
 
   const renderSuggestion = (suggestion) => (
+    
+    <Box
+    sx={{
+      display: "flex",
+      flexDirection: "row", // Change the direction to horizontal
+      flexWrap: "wrap", // Allow items to wrap to the next line
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
     <Link
       to={`/tags/${suggestion}`} // Replace with your route for tag details
       className="suggestion-link"
+      rel="noreferrer" 
+      target="_blank"
     >
       {suggestion}
     </Link>
+    </Box>
   );
 
   const inputProps = {
@@ -67,9 +85,14 @@ const AutoComplete = () => {
     onChange,
   };
 
+  const handleFetchDataClick = () => {
+    // Set the flag to trigger data fetching
+    setFetchDataClicked(true);
+  };
+
   return (
-    <div>
-      <h2>All Tags:</h2>
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      <b style={{ marginRight: "10px" }}>All Tags:</b>
       <Autosuggest
         suggestions={suggestions}
         onSuggestionsFetchRequested={onSuggestionsFetchRequested}
@@ -78,6 +101,7 @@ const AutoComplete = () => {
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
       />
+      <div><button onClick={handleFetchDataClick}>Carregar</button></div>
     </div>
   );
 };

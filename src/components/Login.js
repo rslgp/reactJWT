@@ -6,6 +6,10 @@ import JWT_AUTH from "./func/JWT_AUTH"
 import GlobalVariables from "./func/GlobalVariables";
 import Cookies from "js-cookie";
 
+import MultiTag from "./MultiTag";
+import { Divider } from "@mui/material";
+import AutoComplete from "./firebasePages/AutoComplete";
+
 const credentials = {
   "google":process.env.REACT_APP_GOOGLE_CLIENTID,
   "jwt":process.env.REACT_APP_JWT
@@ -28,13 +32,12 @@ function Login() {
         window.location.href=GlobalVariables.homepage +"/"+ GlobalVariables.profilePage;
     }
     
-    const getSession = ()=>{
-      var client = JWT_AUTH.getSessionData();
-      if(client) window.location.href=GlobalVariables.homepage +"/"+ GlobalVariables.profilePage;
-    }
+    //const getSession = ()=>{
+    //  var client = JWT_AUTH.getSessionData();
+    //  if(client) window.location.href=GlobalVariables.homepage +"/"+ GlobalVariables.profilePage;
+    //}
   return (
     <div className="GoogleLogin">
-        <button onClick={()=>{JWT_AUTH.saveSessionData({"email":"teste"})}}>TESTE</button>
         <GoogleLogin
         clientId={credentials.google}
         buttonText="Continue with Google"
@@ -42,8 +45,10 @@ function Login() {
         onFailure={console.log}
         cookiePolicy={'single_host_origin'}
         />
-        <button onClick={()=>{getSession()}}>TESTE2</button>
+        <Divider variant="fullWidth" sx={{ margin: "16px 0", padding:"10px", width:"70%", mx: "auto" }} />
         
+        <AutoComplete/>
+        <MultiTag/>      
     </div>
   );
 }
