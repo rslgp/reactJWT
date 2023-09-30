@@ -4,6 +4,8 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 import GlobalVariables from "../func/GlobalVariables";
 import app from "../func/firebase_setup"; // Import your Firebase configuration file
 
+import { Box, List, Link } from "@mui/material";
+
 const firestore = getFirestore(app);
 
 const AllTags = () => {
@@ -36,22 +38,25 @@ const AllTags = () => {
 
   return (
     <div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <h2>All Tags:</h2>
-      <div>
+      <List>
         {tags.map((tag) => (
-          <div key={tag}>
-            <a
-              
-              target="_blank"
-              rel="noreferrer"
-              href={`${GlobalVariables.homepage}/${GlobalVariables.tagPage.split(":")[0]}${tag}`}
-            >
-              {tag}
-            </a><br/>
-          </div>
+          <Link style={{ marginRight: "10px" }} key={tag} href={`${GlobalVariables.homepage}/${GlobalVariables.tagPage.split(":")[0]}${tag}`} rel="noreferrer" target="_blank">
+            {tag}
+          </Link>
         ))}
-      </div>
+      </List>
+    </Box>
     </div>
+
   );
 };
 

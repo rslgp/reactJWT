@@ -3,6 +3,10 @@ import app from "../func/firebase_setup";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { useParams } from 'react-router-dom';
 
+
+import { Box, Typography, Avatar, Chip, Link } from "@mui/material";
+import GlobalVariables from "../func/GlobalVariables";
+
 const firestore = getFirestore(app);
 
 const PublicPage = () => {
@@ -41,32 +45,63 @@ const PublicPage = () => {
 
   return (
     <div>
-      {userData ? (
-        <div>
-          <h2>Profile Information</h2>
-          <div>
-            <strong>Name:</strong> {userData.name}
-          </div>
-          <div>
-            <img
-              src={userData.profilePictureUrl}
-              alt="Profile"
-              style={{ maxWidth: "100px", maxHeight: "100px" }}
-            />
-          </div>
-          <div>
-          <strong>Tags:</strong>
-            <ul>
-              {userData.tags.map((tag, index) => (
-                <li key={index}>{tag}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      ) : (
-        <p>Loading profile data...</p>
-      )}
-    </div>
+  {userData ? (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <h2>Profile Information</h2>
+      <Typography variant="h6" component="h3">
+        {userData.name}
+      </Typography>
+
+      { userData.publicContact ? 
+      <Link href={`${GlobalVariables.fixURL(userData.publicContact)}`} target="_blank" rel="noreferrer">
+        {userData.publicContact}
+      </Link> : <></>}
+
+      
+      { userData.portfolio ? 
+      <Link href={`${GlobalVariables.fixURL(userData.portfolio)}`} target="_blank" rel="noreferrer">
+        {userData.portfolio}
+      </Link> : <></>}
+
+      <Avatar
+        alt="Profile picture"
+        src={userData.profilePictureUrl}
+        sx={{
+          width: 100,
+          height: 100,
+          margin: "auto",
+        }}
+      />
+      <Typography variant="body1">Tags:</Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "wrap",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {userData.tags.map((tag, index) => (
+          <Chip
+            key={index}
+            label={tag}
+            sx={{
+              margin: "5px",
+            }}
+          />
+        ))}
+      </Box>
+    </Box>
+  ) : (
+    <p>Loading profile data...</p>
+  )}
+</div>
   );
 };
 

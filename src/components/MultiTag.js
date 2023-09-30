@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import getUsersWithTags from './func/queryTags';
 import GlobalVariables from "./func/GlobalVariables";
 
+import {Box, TextField, Button, List, ListItem, Link} from "@mui/material";
+import "../App.css";
+
 const MultiTag = () => {
   const [inputValue, setInputValue] = useState(""); // State for input value
   const [values, setValues] = useState([]); // State to store split values
@@ -17,33 +20,68 @@ const MultiTag = () => {
     setValues(await getUsersWithTags(splitValues));
   };
 
-  return (
-    <div>
-      <h2>Multi-Value Input</h2>
-      <input
-        type="text"
-        placeholder="Enter values separated by comma"
-        value={inputValue}
-        onChange={handleInputChange}
-      />
-      <button onClick={handleSplitValues}>Split Values</button>
+return (
+  <Box
+  sx={{
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  }}
+>
+  <h2>Buscador multi Tag</h2>
+  <TextField
+    type="text"
+    placeholder="Insira as tags separado por virgulas (sem espaço)"
+    value={inputValue}
+    onChange={handleInputChange}
+    sx={{
+      width: "100%",
+      marginBottom: "10px",
+    }}
+  />
+  <Button onClick={handleSplitValues} variant="contained">Buscar</Button>
 
-      <div>
-        <h3>Split Values:</h3>
-        <div>
-          {values.map((value, index) => (            
-          <div key={index}><a target="_blank"
-          rel="noreferrer"
-          href={
-            GlobalVariables.homepage +
-            "/" +
-            GlobalVariables.publicProfilePage.split(":")[0] +
-            value.public_id}>{value.public_id}</a>{value.name}<br/></div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  <Box
+    sx={{
+      marginTop: "10px",
+    }}
+  >
+    <h3>Resultado:</h3>
+    <List>
+      {values.map((value, index) => (
+        <ListItem key={index}>
+          <Link
+            className="espacamento"
+            target="_blank"
+            rel="noreferrer"
+            href={`${GlobalVariables.homepage}/${GlobalVariables.publicProfilePage.split(":")[0]}${value.public_id}`}
+          >
+            {value.public_id}
+          </Link>
+          {value.name}
+          
+          {value.publicContact ? 
+          <Link className="espacamento" href={`${GlobalVariables.fixURL(value.publicContact)}`} target="_blank" rel="noreferrer">
+            {value.publicContact}
+          </Link> : <></>}
+
+          {value.portfolio ? 
+          <Link className="espacamento" href={`${GlobalVariables.fixURL(value.portfolio)}`} target="_blank" rel="noreferrer">
+            portfolio
+          </Link> : <></>}
+
+          {value.curriculo ? 
+          <Link className="espacamento" href={`${GlobalVariables.fixURL(value.curriculo)}`} target="_blank" rel="noreferrer">
+            curriculo
+          </Link> : <></>}
+
+        </ListItem>
+      ))}
+    </List>
+  </Box>
+</Box>
+);
 };
 
 export default MultiTag;

@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import JWT_AUTH from "../func/JWT_AUTH";
 import app from "../func/firebase_setup";
 import GlobalVariables from "../func/GlobalVariables";
-import { getFirestore, doc, getDoc, setDoc, updateDoc } from "firebase/firestore"; // Updated import statements
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteField } from "firebase/firestore"; // Updated import statements
 import Cookies from "js-cookie";
 import AutoComplete from "./AutoComplete";
+
+
+import { Box, Typography, Avatar, Chip, TextField, Button } from "@mui/material";
 
 // Initialize Firestore
 const firestore = getFirestore(app);
@@ -20,10 +23,15 @@ function emailToHash(email) {
   return Math.abs(hash) + Date.now(); // Convert to a positive number
 }
 
+const removedTags=[];
+
 const Page = () => {
   const [userData, setUserData] = useState(null);
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState("");
+  const [newPublicContact, setNewPublicContact] = useState("");
+  const [newPortfolio, setNewPortfolio] = useState("");
+  const [newCurriculo, setNewCurriculo] = useState("");
 
   const saveProfile = () => {
     const client = JWT_AUTH.getSessionData();
@@ -37,7 +45,12 @@ const Page = () => {
     const updatedTags = tags;
 
     // Update the user document with the new tags
-    updateDoc(userDocRef, { tags: updatedTags });
+    updateDoc(userDocRef, 
+      { tags: updatedTags, 
+        publicContact: newPublicContact, 
+        portfolio: newPortfolio,
+        curriculo: newCurriculo
+      });
 
     updatedTags.forEach(async (element) => {
       if (element !== "") {
@@ -56,6 +69,19 @@ const Page = () => {
         
       }
     });
+
+    removedTags.forEach(async (element) => {
+      if (element !== "") {
+        const tagDocRef = doc(firestore, "tags", element.toLowerCase());
+        
+        updateDoc(tagDocRef, {
+          [userData.public_id.toString()]: deleteField()
+        });
+        
+      }
+    });
+
+    alert("Perfil salvo");
   };
 
   useEffect(() => {
@@ -76,7 +102,11 @@ const Page = () => {
           setUserData(data);
           if (data.tags) {
             setTags(data.tags); // Set the existing tags
-          }
+          }          
+          if(data.publicContact) setNewPublicContact(data.publicContact);
+          if(data.portfolio) setNewPortfolio(data.portfolio);
+          if(data.curriculo) setNewCurriculo(data.curriculo);
+
         } else {
           console.log("No data available");
           try{
@@ -113,81 +143,164 @@ const Page = () => {
   const handleAddTag = () => {
     if (newTag.trim() === "" || tags.includes(newTag)) return; // Don't add empty tags
 
-    if (!/^[A-Za-z ]+$/.test(newTag)) {
-      // Check if the newTag contains only letters
-      alert("Tags can only contain letters.");
-      return;
-    }
-    setNewTag(newTag.toLowerCase());
+    //if (!/^[A-Za-z ]+$/.test(newTag)) {
+    //  // Check if the newTag contains only letters
+    //  alert("Tags can only contain letters.");
+    //  return;
+    //}
+    const tag_formatted =  newTag.toLowerCase();
+    setNewTag(tag_formatted);
 
     // Add the new tag to the tags array
-    const updatedTags = [...tags, newTag];
+    const updatedTags = [...tags, tag_formatted];
     setTags(updatedTags);
 
     // Update the userData in the database
-    const updatedUserData = { ...userData, tags: updatedTags };
+    const updatedUserData = { ...userData, tags: updatedTags};
     setUserData(updatedUserData);
 
     // Clear the input field
     setNewTag("");
   };
+  
+  const checkIfEnterTag = (e) => {
+    if(e.key === "Enter") handleAddTag();
+  }
+
+  const handleRemoveTag = (tagToRemove) => {
+    const updatedTags = tags.filter((tag) => tag !== tagToRemove);
+    setTags(updatedTags);
+    
+    removedTags.push(tagToRemove);
+
+    // Update the userData in the database
+    const updatedUserData = { ...userData, tags: updatedTags };
+    setUserData(updatedUserData);
+  };
 
   const handleTagInputChange = (e) => {
     setNewTag(e.target.value);
   };
+  const handlePublicContactInputChange = (e) => {
+    setNewPublicContact(e.target.value);
+  };
+  const handlePortfolioInputChange = (e) => {
+    setNewPortfolio(e.target.value);
+  };
+  const handleCurriculoInputChange = (e) => {
+    setNewCurriculo(e.target.value);
+  };
 
   return (
     <div>
-      {userData ? (
-        <div>
-          <h2>Profile Information</h2>
-          <div>
-            <img
-              src={userData.profilePictureUrl}
-              alt="Profile"
-              style={{ maxWidth: "100px", maxHeight: "100px" }}
+      {userData ? ( <>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <h2>Profile Information</h2>
+        <Avatar
+          alt="Profile picture"
+          src={userData.profilePictureUrl}
+          sx={{
+            width: 100,
+            height: 100,
+            margin: "auto",
+          }}
+        />
+        <Typography variant="h6" component="h3">
+          {userData.name}
+        </Typography>
+        <Typography variant="body1">{userData.email}</Typography>
+        <Typography variant="body1">
+          Public Id:
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href={
+              GlobalVariables.homepage +
+              "/" +
+              GlobalVariables.publicProfilePage.split(":")[0] +
+              userData.public_id
+            }
+          >
+            {userData.public_id}
+          </a>
+        </Typography>
+        <Typography variant="body1">Tags:</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "wrap",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {tags.map((tag, index) => (
+            <Chip
+              key={index}
+              label={tag}
+              onDelete={() => handleRemoveTag(tag)}
+              sx={{
+                margin: "5px",
+              }}
             />
-          </div>
-          <div>
-            <strong>Name:</strong> {userData.name}
-          </div>
-          <div>
-            <strong>Email:</strong> {userData.email}
-          </div>
-          <div>
-            <strong>Public Id:</strong>{" "}
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href={
-                GlobalVariables.homepage +
-                "/" +
-                GlobalVariables.publicProfilePage.split(":")[0] +
-                userData.public_id
-              }
-            >
-              {userData.public_id}
-            </a>
-          </div>
-          <div>
-            <strong>Tags:</strong>
-            <ul>
-              {tags.map((tag, index) => (
-                <li key={index}>{tag}</li>
-              ))}
-            </ul>
-            <input
-              type="text"
-              placeholder="Add a tag"
-              value={newTag}
-              onChange={handleTagInputChange}
-            />
-            <button onClick={handleAddTag}>Add Tag</button>
-          </div>
+          ))}
+        </Box>
+        <TextField
+          label="Add a tag"
+          value={newTag}
+          onChange={handleTagInputChange}
+          onKeyUp={checkIfEnterTag}
+          sx={{
+            width: "100%",
+            margin: "10px 0",
+          }}
+        />
+        <Button onClick={handleAddTag}>Add Tag</Button>
+        
+        <TextField
+          label="Add Public Contact"
+          placeholder="Enter contact email, number, social media"
+          value={newPublicContact}
+          onChange={handlePublicContactInputChange}
+          sx={{
+            width: "100%",
+            margin: "10px 0",
+          }}
+        />
 
-          <button onClick={saveProfile}>SAVE</button>
+        
+        <TextField
+          label="Add portfolio URL"
+          placeholder="Enter portfolio URL"
+          value={newPortfolio}
+          onChange={handlePortfolioInputChange}
+          sx={{
+            width: "100%",
+            margin: "10px 0",
+          }}
+        />
+
+        
+        <TextField
+          label="Add curriculo URL"
+          placeholder="Enter curriculo URL"
+          value={newCurriculo}
+          onChange={handleCurriculoInputChange}
+          sx={{
+            width: "100%",
+            margin: "10px 0",
+          }}
+        />
+
+        <Button onClick={saveProfile}>SAVE</Button>
+      </Box>
           <AutoComplete/>
-        </div>
+          </>
       ) : (
         <p>Loading profile data...</p>
       )}
