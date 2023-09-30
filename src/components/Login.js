@@ -48,7 +48,7 @@ function Login() {
         <Divider variant="fullWidth" sx={{ margin: "16px 0", padding:"10px", width:"70%", mx: "auto" }} />
         
         <AutoComplete/>
-        <MultiTag/>      
+        <MultiTag hideNavBar={true}/>      
     </div>
   );
 }

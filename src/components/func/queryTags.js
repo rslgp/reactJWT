@@ -35,7 +35,7 @@ const getUsersWithTags = async (tagsToFilter) => {
     });
 
     // usersWithTags now contains the list of users who have both "react" and "nodejs" tags
-    console.log("Users with both tags:", usersWithTags);
+    //console.log("Users with both tags:", usersWithTags);
     return usersWithTags;
   } catch (error) {
     console.error("Error fetching users:", error);

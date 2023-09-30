@@ -8,6 +8,7 @@ import AutoComplete from "./AutoComplete";
 
 
 import { Box, Typography, Avatar, Chip, TextField, Button, Divider } from "@mui/material";
+import NavBar from "../NavBar";
 
 // Initialize Firestore
 const firestore = getFirestore(app);
@@ -218,6 +219,7 @@ const Page = () => {
           alignItems: "center",
         }}
       >
+        <NavBar/>
         <h2>Profile Information</h2>
         <Avatar
           alt="Profile picture"

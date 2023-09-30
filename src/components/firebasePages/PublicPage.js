@@ -58,16 +58,36 @@ const PublicPage = () => {
         {userData.name}
       </Typography>
 
-      { userData.publicContact ? 
-      <Link href={`${GlobalVariables.fixURL(userData.publicContact)}`} target="_blank" rel="noreferrer">
-        {userData.publicContact}
-      </Link> : <></>}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "10px", // Add gap between the links
+          marginTop: "10px", // Add margin to the top
+        }}
+      >
+        {userData.publicContact ? (
+          <Link href={`${GlobalVariables.fixURL(userData.publicContact)}`} target="_blank" rel="noreferrer">
+            {userData.publicContact}
+          </Link>
+        ) : null}
 
-      
-      { userData.portfolio ? 
-      <Link href={`${GlobalVariables.fixURL(userData.portfolio)}`} target="_blank" rel="noreferrer">
-        {userData.portfolio}
-      </Link> : <></>}
+        {userData.portfolio ? (
+          <Link href={`${GlobalVariables.fixURL(userData.portfolio)}`} target="_blank" rel="noreferrer">
+            Portfolio
+          </Link>
+        ) : null}
+
+        {userData.curriculo ? (
+          <Link href={`${GlobalVariables.fixURL(userData.curriculo)}`} target="_blank" rel="noreferrer">
+            Curriculo
+          </Link>
+        ) : null}
+      </Box>
+
 
       <Avatar
         alt="Profile picture"

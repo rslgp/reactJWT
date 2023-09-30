@@ -92,7 +92,7 @@ const AutoComplete = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
-      <b style={{ marginRight: "10px" }}>All Tags:</b>
+      <b style={{ marginRight: "10px", marginLeft: "10px" }}>All Tags:</b>
       <Autosuggest
         suggestions={suggestions}
         onSuggestionsFetchRequested={onSuggestionsFetchRequested}
@@ -101,7 +101,7 @@ const AutoComplete = () => {
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
       />
-      <div><button onClick={handleFetchDataClick}>Carregar</button></div>
+      <div><button onClick={handleFetchDataClick}>Carregar Tags</button></div>
     </div>
   );
 };
