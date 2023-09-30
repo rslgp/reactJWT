@@ -255,7 +255,7 @@ const Page = () => {
           ))}
         </Box>
 
-        <div style={{ display: "flex", flexDirection: "row" }}>
+        <div style={{ display: "flex", flexDirection: "row", width: "80%" }}>
         <TextField
           label="Add a tag"
           value={newTag}
@@ -263,10 +263,10 @@ const Page = () => {
           onKeyUp={checkIfEnterTag}
           sx={{
             width: "100%",
-            margin: "10px 0",
+            margin: "10px -8px 0 0",
           }}
         />
-        <Button onClick={handleAddTag} style={{borderRadius:"12px",height: "60px", marginTop: "8px", backgroundColor:"#f0f2f5"}} >ADD</Button>
+        <Button onClick={handleAddTag} style={{borderRadius:"12px",height: "60px", margin: "8px 0 0 8px", backgroundColor:"#f0f2f5"}} >ADD</Button>
       </div>
         
         <TextField
@@ -275,7 +275,7 @@ const Page = () => {
           value={newPublicContact}
           onChange={handlePublicContactInputChange}
           sx={{
-            width: "100%",
+            width: "80%",
             margin: "10px 0",
           }}
         />
@@ -287,7 +287,7 @@ const Page = () => {
           value={newPortfolio}
           onChange={handlePortfolioInputChange}
           sx={{
-            width: "100%",
+            width: "80%",
             margin: "10px 0",
           }}
         />
@@ -299,7 +299,7 @@ const Page = () => {
           value={newCurriculo}
           onChange={handleCurriculoInputChange}
           sx={{
-            width: "100%",
+            width: "80%",
             margin: "10px 0",
           }}
         />
