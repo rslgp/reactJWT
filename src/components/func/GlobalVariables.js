@@ -1,5 +1,5 @@
 const GlobalVariables = {}
-GlobalVariables.homepage="http://localhost:3000/reactJWT/#";
+GlobalVariables.homepage="https://rslgp.github.io/reactJWT/#";
 GlobalVariables.loginPage="auth/login";
 GlobalVariables.profilePage="page";
 GlobalVariables.publicProfilePage="profile/:profile_id";
@@ -9,7 +9,7 @@ GlobalVariables.multiTagPage="querytags";
 
 GlobalVariables.fixURL = (malFormedURL) => {
     if(!malFormedURL) return;
-    
+
     if(malFormedURL.includes("http")){
         return malFormedURL;
     }
