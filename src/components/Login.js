@@ -6,9 +6,6 @@ import JWT_AUTH from "./func/JWT_AUTH"
 import GlobalVariables from "./func/GlobalVariables";
 import Cookies from "js-cookie";
 
-import MultiTag from "./MultiTag";
-import { Divider } from "@mui/material";
-
 const credentials = {
   "google":process.env.REACT_APP_GOOGLE_CLIENTID,
   "jwt":process.env.REACT_APP_JWT
@@ -43,10 +40,7 @@ function Login() {
         onSuccess={onLogin}
         onFailure={console.log}
         cookiePolicy={'single_host_origin'}
-        />
-        <Divider variant="fullWidth" sx={{ margin: "16px 0", padding:"10px", width:"70%", mx: "auto" }} />
-        
-        <MultiTag hideNavBar={true}/>      
+        />      
     </div>
   );
 }

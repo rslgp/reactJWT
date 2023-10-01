@@ -32,10 +32,10 @@ return (
         alignItems: "center",
       }}
     >
-      <h2>Buscador de perfil multi Tag</h2>
+      <h2>Buscador de perfil por tags</h2>
       <TextField
         type="text"
-        placeholder="Insira as tags separado por virgulas (sem espaço)"
+        placeholder="tags separado por vírgulas (sem espaço)"
         value={inputValue}
         onChange={handleInputChange}
         sx={{
@@ -66,17 +66,17 @@ return (
               {value.publicContact ? 
               <Link className="espacamento" href={`${GlobalVariables.fixURL(value.publicContact)}`} target="_blank" rel="noreferrer">
                 {value.publicContact}
-              </Link> : <></>}
+              </Link> : null}
 
               {value.portfolio ? 
               <Link className="espacamento" href={`${GlobalVariables.fixURL(value.portfolio)}`} target="_blank" rel="noreferrer">
                 portfolio
-              </Link> : <></>}
+              </Link> : null}
 
               {value.curriculo ? 
               <Link className="espacamento" href={`${GlobalVariables.fixURL(value.curriculo)}`} target="_blank" rel="noreferrer">
-                curriculo
-              </Link> : <></>}
+                currículo
+              </Link> : null}
 
             </ListItem>
           ))}
