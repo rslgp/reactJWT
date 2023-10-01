@@ -86,19 +86,20 @@ const Page = () => {
         }
       });
       
-      // Commit the batch to write all the updates in a single request
-      await batch.commit();
-
     removedTags.forEach(async (element) => {
       if (element !== "") {
         const tagDocRef = doc(firestore, "tags", element.toLowerCase());
         
-        updateDoc(tagDocRef, {
-          [userData.public_id.toString()]: deleteField()
+        // Queue a delete operation in the batch
+        batch.update(tagDocRef, {
+          [userData.public_id.toString()]: deleteField(),
         });
         
       }
     });
+    
+    // Commit the batch to write all the updates in a single request
+    await batch.commit();
 
     alert("Perfil salvo");
   };
