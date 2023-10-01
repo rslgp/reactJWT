@@ -6,7 +6,7 @@ import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteField, deleteDoc, w
 import Cookies from "js-cookie";
 
 
-import { Box, Typography, Avatar, Chip, TextField, Button, Divider } from "@mui/material";
+import { Box, Typography, Avatar, Chip, TextField, Button, Divider,CircularProgress } from "@mui/material";
 import NavBar from "../NavBar";
 
 // Initialize Firestore
@@ -33,6 +33,14 @@ const Page = () => {
   const [newPortfolio, setNewPortfolio] = useState("");
   const [newCurriculo, setNewCurriculo] = useState("");
 
+  const fillProfilePage = (data) => {    
+    setUserData(data);
+    if(data.tags) setTags(data.tags);
+    if(data.publicContact) setNewPublicContact(data.publicContact);
+    if(data.portfolio) setNewPortfolio(data.portfolio);
+    if(data.curriculo) setNewCurriculo(data.curriculo);
+  }
+
   const deleteProfile = async () => {    
     const client = JWT_AUTH.getSessionData();
     if (!client) {
@@ -44,6 +52,8 @@ const Page = () => {
     await deleteDoc( doc(firestore, "public_users", userData.public_id.toString()) );
 
     await deleteDoc( doc(firestore, "users", id) );
+
+    localStorage.removeItem("userData");
     
     alert("Profile deletado");
     
@@ -100,6 +110,14 @@ const Page = () => {
     
     // Commit the batch to write all the updates in a single request
     await batch.commit();
+    
+    
+    const storedData = JSON.parse(localStorage.getItem("userData"));
+    storedData.tags = updatedTags;
+    storedData.publicContact= newPublicContact;
+    storedData.portfolio= newPortfolio;
+    storedData.curriculo= newCurriculo;    
+    localStorage.setItem("userData", JSON.stringify(storedData));
 
     alert("Perfil salvo");
   };
@@ -115,41 +133,52 @@ const Page = () => {
       const userDocRef = doc(firestore, "users", id);
 
       try {
-        const userDoc = await getDoc(userDocRef);
+        // Check if user data is available in local storage
+        const storedData = JSON.parse(localStorage.getItem("userData"));
 
-        if (userDoc.exists()) {
-          const data = userDoc.data();
-          setUserData(data);
-          if (data.tags) {
-            setTags(data.tags); // Set the existing tags
-          }          
-          if(data.publicContact) setNewPublicContact(data.publicContact);
-          if(data.portfolio) setNewPortfolio(data.portfolio);
-          if(data.curriculo) setNewCurriculo(data.curriculo);
-
+        if (storedData) {
+          // If data is available locally, use it
+          fillProfilePage(storedData);
         } else {
-          console.log("No data available");
-          try{
-            const profileData = JSON.parse(Cookies.get("profile"));
-            Cookies.remove("profile"); //run only once
-            const data = {
-              email: email,
-              name: profileData.name,
-              profilePictureUrl: profileData.imageUrl,
-              tags: [], // Initialize tags as an empty array
-            };
-            const public_id = emailToHash(data.email);
-            data.public_id = public_id;
-            await setDoc(userDocRef, data);
-            console.log(public_id.toString());
-            const publicDocRef = doc(firestore, "public_users", public_id.toString());
+          const userDoc = await getDoc(userDocRef);
 
-            // Create or update a public user document with an 'id' field
-            await setDoc(publicDocRef, { id: id });
-            setUserData(data);
-          }catch(e){
-            console.log(e.message);
-            console.log("no data available create new - error");
+          if (userDoc.exists()) {
+            const data = userDoc.data();
+            fillProfilePage(data);
+
+            // Store user data in local storage
+            localStorage.setItem("userData", JSON.stringify(data));
+          } else {
+            console.log("No data available");
+            try {
+              const profileData = JSON.parse(Cookies.get("profile"));
+              Cookies.remove("profile"); // Run only once
+              const data = {
+                email: email,
+                name: profileData.name,
+                profilePictureUrl: profileData.imageUrl,
+                tags: [], // Initialize tags as an empty array
+              };
+              const public_id = emailToHash(data.email);
+              data.public_id = public_id;
+              await setDoc(userDocRef, data);
+              console.log(public_id.toString());
+              const publicDocRef = doc(
+                firestore,
+                "public_users",
+                public_id.toString()
+              );
+
+              // Create or update a public user document with an 'id' field
+              await setDoc(publicDocRef, { id: id });
+              fillProfilePage(data);
+
+              // Store user data in local storage
+              localStorage.setItem("userData", JSON.stringify(data));
+            } catch (e) {
+              console.log(e.message);
+              console.log("No data available, creating new - error");
+            }
           }
         }
       } catch (error) {
@@ -213,7 +242,8 @@ const Page = () => {
 
   return (
     <div>
-      {userData ? ( <>
+      {
+      userData ? ( <>
       <Box
         sx={{
           display: "flex",
@@ -333,7 +363,10 @@ const Page = () => {
       </Box>
           </>
       ) : (
-        <p>Loading profile data...</p>
+        <>
+          <CircularProgress/>
+          <p>Loading profile data...</p>
+        </>
       )}
     </div>
   );
