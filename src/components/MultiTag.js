@@ -23,7 +23,7 @@ const MultiTag = (props) => {
 
 return (
   <div>
-    {props.hideNavBar ? <></> : <NavBar/>}
+    {props.hideNavBar ? null : <NavBar/>}
     <Box
       sx={{
         display: "flex",
@@ -50,7 +50,6 @@ return (
           marginTop: "10px",
         }}
       >
-        <h3>Resultado:</h3>
         <List>
           {values.map((value, index) => (
             <ListItem key={index}>

@@ -250,8 +250,6 @@ const Page = () => {
           </a>
         </Typography>
 
-        <AutoComplete/>
-
         <Typography variant="body1">Tags:</Typography>
         <Box
           sx={{
