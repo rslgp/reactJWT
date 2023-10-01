@@ -4,7 +4,6 @@ import app from "../func/firebase_setup";
 import GlobalVariables from "../func/GlobalVariables";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteField, deleteDoc } from "firebase/firestore"; // Updated import statements
 import Cookies from "js-cookie";
-import AutoComplete from "./AutoComplete";
 
 
 import { Box, Typography, Avatar, Chip, TextField, Button, Divider } from "@mui/material";

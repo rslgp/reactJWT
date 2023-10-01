@@ -8,7 +8,6 @@ import Cookies from "js-cookie";
 
 import MultiTag from "./MultiTag";
 import { Divider } from "@mui/material";
-import AutoComplete from "./firebasePages/AutoComplete";
 
 const credentials = {
   "google":process.env.REACT_APP_GOOGLE_CLIENTID,
