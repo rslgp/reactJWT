@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import JWT_AUTH from "../func/JWT_AUTH";
 import app from "../func/firebase_setup";
 import GlobalVariables from "../func/GlobalVariables";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteField, deleteDoc } from "firebase/firestore"; // Updated import statements
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteField, deleteDoc, writeBatch } from "firebase/firestore"; // Updated import statements
 import Cookies from "js-cookie";
 
 
@@ -50,7 +50,7 @@ const Page = () => {
     window.location.href=GlobalVariables.homepage +"/"+ GlobalVariables.loginPage;
   }
 
-  const saveProfile = () => {
+  const saveProfile = async () => {
     const client = JWT_AUTH.getSessionData();
     if (!client) {
       return;
@@ -69,23 +69,25 @@ const Page = () => {
         curriculo: newCurriculo
       });
 
-    updatedTags.forEach(async (element) => {
-      if (element !== "") {
-        const tagDocRef = doc(firestore, "tags", element.toLowerCase());
-        
-        const tagDoc = await getDoc(tagDocRef);
-        if(tagDoc.exists()){
-          updateDoc(tagDocRef, {
-            [userData.public_id.toString()]: true
-          });
-        }else{
-          setDoc(tagDocRef, {
-            [userData.public_id.toString()]: true
-          });
+      // Create a batch
+      const batch = writeBatch(firestore);
+      updatedTags.forEach((element) => {
+        if (element !== "") {
+          const tagDocRef = doc(firestore, "tags", element.toLowerCase());
+      
+          // Queue an update operation in the batch
+          batch.set(
+            tagDocRef,
+            {
+              [userData.public_id.toString()]: true,
+            },
+            { merge: true } // Merge to update the field without overwriting other data
+          );
         }
-        
-      }
-    });
+      });
+      
+      // Commit the batch to write all the updates in a single request
+      await batch.commit();
 
     removedTags.forEach(async (element) => {
       if (element !== "") {
