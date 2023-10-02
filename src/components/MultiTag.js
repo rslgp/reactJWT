@@ -1,15 +1,25 @@
 import React, { useState } from "react";
-import getUsersWithTags from './func/queryTags';
+import getUsersWithTags from "./func/queryTags";
 import GlobalVariables from "./func/GlobalVariables";
 
-import {Box, TextField, Button, List, ListItem, Link} from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  List,
+  ListItem,
+  Link,
+  CircularProgress,
+} from "@mui/material";
 import "../App.css";
 import NavBar from "./NavBar";
 import saveToGoogleSheets from "./func/saveToGoogleSheets";
 
 const MultiTag = (props) => {
-  const [inputValue, setInputValue] = useState(""); // State for input value
-  const [values, setValues] = useState([]); // State to store split values
+  const [inputValue, setInputValue] = useState(""); 
+  const [values, setValues] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false); // Track button disabled state
 
   // Function to handle input value changes
   const handleInputChange = (e) => {
@@ -18,79 +28,122 @@ const MultiTag = (props) => {
 
   // Function to split input value by comma and update the 'values' state
   const handleSplitValues = async () => {
-    const splitValues = inputValue.toLowerCase().split(",").map((value) => value.trim());
+    const splitValues = inputValue
+      .toLowerCase()
+      .split(",")
+      .map((value) => value.trim());
+
+    setLoading(true);
+    setButtonDisabled(true); // Disable the button
     const resultado = await getUsersWithTags(splitValues);
     setValues(resultado);
+    setLoading(false);
+    
+    // Enable the button after 30 seconds
+    setTimeout(() => {
+      setButtonDisabled(false);
+    }, 3000);
 
-    saveToGoogleSheets({Busca:inputValue});
+    saveToGoogleSheets({ Busca: inputValue });
 
-    if(resultado.length === 0) alert("busca sem resultados");
+    if (resultado.length === 0) alert("busca sem resultados");
   };
 
-return (
-  <div>
-    {props.hideNavBar ? null : <NavBar/>}
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <h2>Buscador de perfil por tags</h2>
-      <TextField
-        type="text"
-        placeholder="tags separado por vírgulas (sem espaço)"
-        value={inputValue}
-        onChange={handleInputChange}
-        sx={{
-          width: "100%",
-          marginBottom: "10px",
-        }}
-      />
-      <Button onClick={handleSplitValues} variant="contained">Buscar</Button>
-
+  return (
+    <div>
+      {props.hideNavBar ? null : <NavBar />}
       <Box
         sx={{
-          marginTop: "10px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <List>
-          {values.map((value, index) => (
-            <ListItem key={index}>
-              <Link
-                className="espacamento"
-                target="_blank"
-                rel="noreferrer"
-                href={`${GlobalVariables.homepage}/${GlobalVariables.publicProfilePage.split(":")[0]}${value.public_id}`}
-              >
-                {value.public_id}
-              </Link>
-              {value.name}
-              
-              {value.publicContact ? 
-              <Link className="espacamento" href={`${GlobalVariables.fixURL(value.publicContact)}`} target="_blank" rel="noreferrer">
-                {value.publicContact}
-              </Link> : null}
+        <h2>Buscador de perfil por tags</h2>
+        <TextField
+          type="text"
+          placeholder="tags separado por vírgulas (sem espaço)"
+          value={inputValue}
+          onChange={handleInputChange}
+          sx={{
+            width: "100%",
+            marginBottom: "10px",
+          }}
+        />
+        <Button
+          onClick={handleSplitValues}
+          variant="contained"
+          disabled={buttonDisabled} // Disable the button based on the state
+        >
+          {buttonDisabled ? (
+            <CircularProgress size={24} /> // Show CircularProgress when button is disabled
+          ) : (
+            "Buscar"
+          )}
+        </Button>
 
-              {value.portfolio ? 
-              <Link className="espacamento" href={`${GlobalVariables.fixURL(value.portfolio)}`} target="_blank" rel="noreferrer">
-                portfolio
-              </Link> : null}
+        {loading ? (
+          <CircularProgress sx={{ mt: 2 }} />
+        ) : (
+          <Box
+            sx={{
+              marginTop: "10px",
+            }}
+          >
+            <List>
+              {values.map((value, index) => (
+                <ListItem key={index}>
+                  <Link
+                    className="espacamento"
+                    target="_blank"
+                    rel="noreferrer"
+                    href={`${GlobalVariables.homepage}/${GlobalVariables.publicProfilePage.split(":")[0]}${value.public_id}`}
+                  >
+                    {value.public_id}
+                  </Link>
+                  {value.name}
 
-              {value.curriculo ? 
-              <Link className="espacamento" href={`${GlobalVariables.fixURL(value.curriculo)}`} target="_blank" rel="noreferrer">
-                currículo
-              </Link> : null}
+                  {value.publicContact ? (
+                    <Link
+                      className="espacamento"
+                      href={`${GlobalVariables.fixURL(value.publicContact)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {value.publicContact}
+                    </Link>
+                  ) : null}
 
-            </ListItem>
-          ))}
-        </List>
+                  {value.portfolio ? (
+                    <Link
+                      className="espacamento"
+                      href={`${GlobalVariables.fixURL(value.portfolio)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      portfolio
+                    </Link>
+                  ) : null}
+
+                  {value.curriculo ? (
+                    <Link
+                      className="espacamento"
+                      href={`${GlobalVariables.fixURL(value.curriculo)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      currículo
+                    </Link>
+                  ) : null}
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        )}
       </Box>
-    </Box>
-  </div>
-);
+    </div>
+  );
 };
 
 export default MultiTag;

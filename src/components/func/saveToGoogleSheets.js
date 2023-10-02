@@ -43,7 +43,7 @@ async function saveToGoogleSheets(row) {
 
     const sheet = doc.sheetsByIndex[0];
 	
-    console.log(row);
+    //console.log(row);
     row.Date = getLocalDate();
     var GoogleSpreadsheetRowInserted = await sheet.addRow(row);
     if(GoogleSpreadsheetRowInserted) return true;
