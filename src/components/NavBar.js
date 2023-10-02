@@ -7,6 +7,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 const signout = () => {
   Cookies.remove("access_token");
+  localStorage.removeItem("userData");
   window.location.href =
     GlobalVariables.homepage + "/" + GlobalVariables.loginPage;
 };
