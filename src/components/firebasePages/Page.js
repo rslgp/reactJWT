@@ -11,6 +11,8 @@ import NavBar from "../NavBar";
 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Tutorial from "../Tutorial";
+import "../css/tutorial.css"
 
 // Initialize Firestore
 const firestore = getFirestore(app);
@@ -35,7 +37,8 @@ const Page = () => {
   const [newPublicContact, setNewPublicContact] = useState("");
   const [newPortfolio, setNewPortfolio] = useState("");
   const [newCurriculo, setNewCurriculo] = useState("");
-
+  const [tutorial, setTutorial] = useState(false);
+  
   const showNotification = (message, type = "success") => {
     toast[type](message, {
       position: "top-right", // You can change the position as needed
@@ -84,7 +87,8 @@ const Page = () => {
     const email = client.email;
     const id = btoa(email);
     const userDocRef = doc(firestore, "users", id);
-
+    
+    setTutorial(tags.length===0); //disappear msg if tags
     const updatedTags = tags;
 
     // Update the user document with the new tags
@@ -156,6 +160,9 @@ const Page = () => {
         if (storedData) {
           // If data is available locally, use it
           fillProfilePage(storedData);
+
+          setTutorial(storedData.tags.length===0); //tutorial if no tags
+          
         } else {
           const userDoc = await getDoc(userDocRef);
 
@@ -165,6 +172,8 @@ const Page = () => {
 
             // Store user data in local storage
             localStorage.setItem("userData", JSON.stringify(data));
+            
+            setTutorial(data.tags.length===0); //tutorial if no tags
           } else {
             console.log("No data available");
             try {
@@ -192,6 +201,8 @@ const Page = () => {
 
               // Store user data in local storage
               localStorage.setItem("userData", JSON.stringify(data));
+
+              setTutorial(true); //tutorial if no tags
             } catch (e) {
               console.log(e.message);
               console.log("No data available, creating new - error");
@@ -204,6 +215,7 @@ const Page = () => {
     }
 
     getData();
+
   }, []); // Empty dependency array to run this effect only once
 
   const handleAddTag = () => {
@@ -301,6 +313,7 @@ const Page = () => {
         </Typography>
 
         <Typography variant="body1">Tags:</Typography>
+        {tutorial ? <Tutorial/> : null}
         <Box
           sx={{
             display: "flex",
