@@ -15,9 +15,6 @@ function Login() {
 
     function onLogin(googleResponse){
         console.log(googleResponse);
-        //var inseriu = saveToGoogleSheets(googleResponse.profileObj);
-        //if(inseriu) alert("Ponto registrado");
-        //else alert("Falha no ponto");
 
         JWT_AUTH.saveSessionData(googleResponse.profileObj);
         //GlobalVariables.profileData = googleResponse.profileObj;

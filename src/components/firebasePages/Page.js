@@ -9,6 +9,9 @@ import Cookies from "js-cookie";
 import { Box, Typography, Avatar, Chip, TextField, Button, Divider,CircularProgress } from "@mui/material";
 import NavBar from "../NavBar";
 
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 // Initialize Firestore
 const firestore = getFirestore(app);
 
@@ -33,6 +36,17 @@ const Page = () => {
   const [newPortfolio, setNewPortfolio] = useState("");
   const [newCurriculo, setNewCurriculo] = useState("");
 
+  const showNotification = (message, type = "success") => {
+    toast[type](message, {
+      position: "top-right", // You can change the position as needed
+      autoClose: 3000, // Notification will close automatically after 3 seconds
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
   const fillProfilePage = (data) => {    
     setUserData(data);
     if(data.tags) setTags(data.tags);
@@ -55,7 +69,9 @@ const Page = () => {
 
     localStorage.removeItem("userData");
     
-    alert("Profile deletado");
+    //alert("Profile deletado");
+    
+    showNotification("Perfil deletado", "error");
     
     window.location.href=GlobalVariables.homepage +"/"+ GlobalVariables.loginPage;
   }
@@ -119,7 +135,8 @@ const Page = () => {
     storedData.curriculo= newCurriculo;    
     localStorage.setItem("userData", JSON.stringify(storedData));
 
-    alert("Perfil salvo");
+    //alert("Perfil salvo");
+    showNotification("Perfil salvo", "success");
   };
 
   useEffect(() => {
@@ -242,6 +259,7 @@ const Page = () => {
 
   return (
     <div>
+      <ToastContainer />
       {
       userData ? ( <>
       <Box

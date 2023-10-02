@@ -15,12 +15,27 @@ import "../App.css";
 import NavBar from "./NavBar";
 import saveToGoogleSheets from "./func/saveToGoogleSheets";
 
+
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const MultiTag = (props) => {
   const [inputValue, setInputValue] = useState(""); 
   const [values, setValues] = useState([]);
   const [loading, setLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false); // Track button disabled state
 
+  const showNotification = (message, type = "success") => {
+    toast[type](message, {
+      position: "bottom-right", // You can change the position as needed
+      autoClose: 3000, // Notification will close automatically after 3 seconds
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+  
   // Function to handle input value changes
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -47,11 +62,14 @@ const MultiTag = (props) => {
 
     saveToGoogleSheets({ Busca: busca });
 
-    if (resultado.length === 0) alert("busca sem resultados");
+    if (resultado.length === 0) showNotification("busca sem resultados", "warning");
+    //alert("busca sem resultados");
+    
   };
 
   return (
     <div>
+      <ToastContainer />
       {props.hideNavBar ? null : <NavBar />}
       <Box
         sx={{
