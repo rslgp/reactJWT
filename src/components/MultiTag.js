@@ -28,8 +28,9 @@ const MultiTag = (props) => {
 
   // Function to split input value by comma and update the 'values' state
   const handleSplitValues = async () => {
-    const splitValues = inputValue
-      .toLowerCase()
+	if(inputValue.length===0) return;
+	var busca = inputValue.replaceAll(", ",",").toLowerCase();
+    const splitValues = busca
       .split(",")
       .map((value) => value.trim());
 
@@ -44,7 +45,7 @@ const MultiTag = (props) => {
       setButtonDisabled(false);
     }, 3000);
 
-    saveToGoogleSheets({ Busca: inputValue });
+    saveToGoogleSheets({ Busca: busca });
 
     if (resultado.length === 0) alert("busca sem resultados");
   };
@@ -63,7 +64,7 @@ const MultiTag = (props) => {
         <h2>Buscador de perfil por tags</h2>
         <TextField
           type="text"
-          placeholder="tags separado por vírgulas (sem espaço)"
+          placeholder="tags separado por vírgulas"
           value={inputValue}
           onChange={handleInputChange}
           sx={{
