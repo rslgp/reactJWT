@@ -18,10 +18,13 @@ const MultiTag = (props) => {
 
   // Function to split input value by comma and update the 'values' state
   const handleSplitValues = async () => {
-    const splitValues = inputValue.split(",").map((value) => value.trim());
-    setValues(await getUsersWithTags(splitValues));
+    const splitValues = inputValue.toLowerCase().split(",").map((value) => value.trim());
+    const resultado = await getUsersWithTags(splitValues);
+    setValues(resultado);
 
     saveToGoogleSheets({Busca:inputValue});
+
+    if(resultado.length === 0) alert("busca sem resultados");
   };
 
 return (
