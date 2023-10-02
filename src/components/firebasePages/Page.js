@@ -12,7 +12,6 @@ import NavBar from "../NavBar";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Tutorial from "../Tutorial";
-import "../css/tutorial.css"
 
 // Initialize Firestore
 const firestore = getFirestore(app);
