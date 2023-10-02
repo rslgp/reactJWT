@@ -5,6 +5,7 @@ import GlobalVariables from "./func/GlobalVariables";
 import {Box, TextField, Button, List, ListItem, Link} from "@mui/material";
 import "../App.css";
 import NavBar from "./NavBar";
+import saveToGoogleSheets from "./func/saveToGoogleSheets";
 
 const MultiTag = (props) => {
   const [inputValue, setInputValue] = useState(""); // State for input value
@@ -19,6 +20,8 @@ const MultiTag = (props) => {
   const handleSplitValues = async () => {
     const splitValues = inputValue.split(",").map((value) => value.trim());
     setValues(await getUsersWithTags(splitValues));
+
+    saveToGoogleSheets({Busca:inputValue});
   };
 
 return (

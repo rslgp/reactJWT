@@ -1,5 +1,5 @@
 const GlobalVariables = {}
-GlobalVariables.homepage="http://rslgp.github.io/reactJWT/#";
+GlobalVariables.homepage="https://rslgp.github.io/collabin/#";
 GlobalVariables.loginPage="auth/login";
 GlobalVariables.profilePage="page";
 GlobalVariables.publicProfilePage="profile/:profile_id";

@@ -32,7 +32,7 @@ function getLocalDate(){
 
 }
 
-async function saveToGoogleSheets(profileObj) {
+async function saveToGoogleSheets(row) {
   try{
     await doc.useServiceAccountAuth({
         client_email: credentials.email,
@@ -42,9 +42,9 @@ async function saveToGoogleSheets(profileObj) {
     await doc.loadInfo(); // Loads document properties and worksheets
 
     const sheet = doc.sheetsByIndex[0];
-    
-    const row = { Email: profileObj.email, DateISO: getLocalDate(), Nome: profileObj.name};
+	
     console.log(row);
+    row.Date = getLocalDate();
     var GoogleSpreadsheetRowInserted = await sheet.addRow(row);
     if(GoogleSpreadsheetRowInserted) return true;
   }catch(e){
